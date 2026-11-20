@@ -36,3 +36,40 @@ if (!reduceMotion) {
     });
   });
 }
+
+// Enlarge product and gallery images in a native, keyboard-accessible dialog.
+const imageViewer = document.createElement('dialog');
+imageViewer.className = 'image-viewer';
+imageViewer.setAttribute('aria-label', 'Expanded image');
+imageViewer.innerHTML = '<button class="image-viewer-close" type="button" aria-label="Close image">&times;</button><img class="image-viewer-content" alt=""><p class="image-viewer-caption"></p>';
+document.body.append(imageViewer);
+
+const viewerImage = imageViewer.querySelector('.image-viewer-content');
+const viewerCaption = imageViewer.querySelector('.image-viewer-caption');
+const closeViewer = () => imageViewer.close();
+
+imageViewer.querySelector('.image-viewer-close').addEventListener('click', closeViewer);
+imageViewer.addEventListener('click', (event) => {
+  if (event.target === imageViewer) closeViewer();
+});
+
+document.querySelectorAll('.image-gallery img, .product-photo').forEach((image) => {
+  image.tabIndex = 0;
+  image.setAttribute('role', 'button');
+  image.setAttribute('aria-label', `Enlarge image: ${image.alt}`);
+
+  const openViewer = () => {
+    viewerImage.src = image.currentSrc || image.src;
+    viewerImage.alt = image.alt;
+    viewerCaption.textContent = image.closest('figure')?.querySelector('figcaption')?.textContent || image.alt;
+    imageViewer.showModal();
+  };
+
+  image.addEventListener('click', openViewer);
+  image.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openViewer();
+    }
+  });
+});
