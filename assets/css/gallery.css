@@ -1,10 +1,51 @@
-/* Product information gallery */
-.gallery-section { padding: clamp(78px, 9vw, 110px) 0; background: var(--paper); }
-.image-gallery { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
-.image-gallery figure { grid-column: span 4; margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: #fff; box-shadow: var(--shadow-sm); transition: transform .25s, box-shadow .25s; }
-.image-gallery figure:nth-child(4), .image-gallery figure:nth-child(5) { grid-column: span 6; }
-.image-gallery figure:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-.image-gallery img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1.18; object-fit: cover; }
-.image-gallery figcaption { padding: 14px 16px 16px; color: var(--ink-soft); font-family: var(--serif); font-size: 1rem; }
-@media (max-width: 850px) { .image-gallery figure, .image-gallery figure:nth-child(4), .image-gallery figure:nth-child(5) { grid-column: span 6; } }
-@media (max-width: 580px) { .image-gallery { grid-template-columns: 1fr; } .image-gallery figure, .image-gallery figure:nth-child(4), .image-gallery figure:nth-child(5) { grid-column: auto; } }
+/* Gallery layout — all artwork displayed once, with its full aspect ratio preserved. */
+.gallery-section {
+  padding: clamp(4.5rem, 8vw, 7rem) 0;
+  background: linear-gradient(180deg, #f8f3e9 0%, #fbf8f1 100%);
+}
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  align-items: start;
+}
+.image-gallery figure {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(78,48,27,.12);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(49,31,16,.08);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.image-gallery figure:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 22px 48px rgba(49,31,16,.14);
+}
+.image-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #f4eee3;
+}
+.image-gallery figcaption {
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  color: #38271d;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: .98rem;
+  line-height: 1.35;
+}
+@media (max-width: 900px) {
+  .image-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 540px) {
+  .image-gallery { grid-template-columns: 1fr; gap: 1.25rem; }
+  .image-gallery figcaption { min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .image-gallery figure { transition: none; }
+}
