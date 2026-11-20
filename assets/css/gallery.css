@@ -1,0 +1,10 @@
+/* Product information gallery */
+.gallery-section { padding: clamp(78px, 9vw, 110px) 0; background: var(--paper); }
+.image-gallery { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
+.image-gallery figure { grid-column: span 4; margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: #fff; box-shadow: var(--shadow-sm); transition: transform .25s, box-shadow .25s; }
+.image-gallery figure:nth-child(4), .image-gallery figure:nth-child(5) { grid-column: span 6; }
+.image-gallery figure:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.image-gallery img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1.18; object-fit: cover; }
+.image-gallery figcaption { padding: 14px 16px 16px; color: var(--ink-soft); font-family: var(--serif); font-size: 1rem; }
+@media (max-width: 850px) { .image-gallery figure, .image-gallery figure:nth-child(4), .image-gallery figure:nth-child(5) { grid-column: span 6; } }
+@media (max-width: 580px) { .image-gallery { grid-template-columns: 1fr; } .image-gallery figure, .image-gallery figure:nth-child(4), .image-gallery figure:nth-child(5) { grid-column: auto; } }
