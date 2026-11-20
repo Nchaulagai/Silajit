@@ -39,12 +39,31 @@
   font-size: .98rem;
   line-height: 1.35;
 }
+
+/* Compliance and report information supplied with the product artwork. */
+.gallery-section::after {
+  content: 'QUALITY DOCUMENTATION\\A\\AISO documentation and the Dubai test approval/report are included in the supplied product records. View the original records before making purchasing or compliance decisions.';
+  display: block;
+  max-width: 760px;
+  margin: clamp(2rem, 4vw, 3.5rem) auto 0;
+  padding: 1.35rem 1.5rem 1.45rem;
+  border: 1px solid rgba(160, 112, 32, .3);
+  border-left: 4px solid #ad741b;
+  border-radius: 8px;
+  background: rgba(255,255,255,.72);
+  color: #38271d;
+  font-size: .94rem;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+
 @media (max-width: 900px) {
   .image-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 540px) {
   .image-gallery { grid-template-columns: 1fr; gap: 1.25rem; }
   .image-gallery figcaption { min-height: 0; }
+  .gallery-section::after { margin-left: 0; margin-right: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .image-gallery figure { transition: none; }
