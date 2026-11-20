@@ -37,7 +37,38 @@ if (!reduceMotion) {
   });
 }
 
-// Enlarge product and gallery images in a native, keyboard-accessible dialog.
+// Toggle the compact navigation on small screens.
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('#primary-navigation');
+
+if (navToggle && navLinks) {
+  const closeNav = () => {
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'Open navigation menu');
+    navLinks.classList.remove('is-open');
+  };
+
+  navToggle.addEventListener('click', () => {
+    const isOpen = navToggle.getAttribute('aria-expanded') === 'true';
+    navToggle.setAttribute('aria-expanded', String(!isOpen));
+    navToggle.setAttribute('aria-label', isOpen ? 'Open navigation menu' : 'Close navigation menu');
+    navLinks.classList.toggle('is-open', !isOpen);
+  });
+
+  navLinks.addEventListener('click', (event) => {
+    if (event.target.closest('a')) closeNav();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!navLinks.contains(event.target) && !navToggle.contains(event.target)) closeNav();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeNav();
+  });
+}
+
+// Native modal dialog provides focus management and Escape-key support.
 const imageViewer = document.createElement('dialog');
 imageViewer.className = 'image-viewer';
 imageViewer.setAttribute('aria-label', 'Expanded image');
@@ -46,7 +77,9 @@ document.body.append(imageViewer);
 
 const viewerImage = imageViewer.querySelector('.image-viewer-content');
 const viewerCaption = imageViewer.querySelector('.image-viewer-caption');
-const closeViewer = () => imageViewer.close();
+const closeViewer = () => {
+  if (imageViewer.open) imageViewer.close();
+};
 
 imageViewer.querySelector('.image-viewer-close').addEventListener('click', closeViewer);
 imageViewer.addEventListener('click', (event) => {
@@ -57,8 +90,11 @@ document.querySelectorAll('.image-gallery img, .product-photo').forEach((image) 
   image.tabIndex = 0;
   image.setAttribute('role', 'button');
   image.setAttribute('aria-label', `Enlarge image: ${image.alt}`);
+  image.setAttribute('aria-haspopup', 'dialog');
+  image.draggable = false;
 
   const openViewer = () => {
+    if (!image.complete || !image.naturalWidth) return;
     viewerImage.src = image.currentSrc || image.src;
     viewerImage.alt = image.alt;
     viewerCaption.textContent = image.closest('figure')?.querySelector('figcaption')?.textContent || image.alt;
